@@ -1,5 +1,4 @@
-variables:
-  ARM_PASS: $(adminpass)
+
 
 trigger:
 - none
@@ -10,7 +9,10 @@ pool:
 steps:
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'quickstarts/microsoft.web/webapp-basic-linux'
+    SourceFolder: 'quickstarts/microsoft.network/azure-bastion/'
+# 'quickstarts/microsoft.compute/vm-simple-windows'
+#quickstarts/microsoft.compute/vm-simple-windows/
+#microsoft.network/vnet-to-vnet/azuredeploy.parameters.json
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
@@ -18,14 +20,13 @@ steps:
   inputs:
     deploymentScope: 'Resource Group'
     azureResourceManagerConnection: 'ARMME'
-    subscriptionId: '059f480e-9ea4-4815-8b0c-04814e957480' #Change for yours
+    subscriptionId: '059f480e-9ea4-4815-8b0c-04814e957480'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'ARMPipelinesDAVE-rg'
     location: 'westeurope'
     templateLocation: 'Linked artifact'
     csmFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.json'
     csmParametersFile: '$(Build.ArtifactStagingDirectory)/azuredeploy.parameters.json'
-    overrideParameters: '-webAppName mytest1234567'
+    overrideParameters: '-bastionHostName mytest1234567'
     #-administratorLogin $(adminUser) -administratorLoginPassword $(ARM_PASS)'
     deploymentMode: 'Incremental'
-
